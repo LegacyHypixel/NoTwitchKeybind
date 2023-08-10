@@ -1,12 +1,24 @@
 pluginManagement {
 	repositories {
 		maven {
+			name = "wagyourtail"
+			url = "https://maven.wagyourtail.xyz/releases/"
+		}
+		maven {
 			name = "Fabric"
 			url = "https://maven.fabricmc.net/"
 		}
 		maven {
 			name = "legacy-fabric"
 			url = "https://repo.legacyfabric.net/repository/legacyfabric/"
+		}
+		maven {
+			name = "neoforged"
+			url = "https://maven.neoforged.net/releases"
+		}
+		maven {
+			name = "forge"
+			url = "https://maven.minecraftforge.net/"
 		}
 		gradlePluginPortal()
 	}
