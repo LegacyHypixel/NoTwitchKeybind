@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "notwitchkeybind",
+    "name": "No Twitch Keybind",
+    "description": "Removes the F6 Twitch stream keybind.",
+    "version": "${version}",
+    "mcversion": "1.8.9",
+    "url": "https://github.com/LegacyHypixel/NoTwitchKeybind",
+    "updateUrl": "",
+    "authorList": ["Crosby"],
+    "credits": "",
+    "logoFile": "/assets/notwitchkeybind/icon.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

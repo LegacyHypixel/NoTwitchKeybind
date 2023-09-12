@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'xyz.wagyourtail.unimined' version '1.0.2'
+	id 'xyz.wagyourtail.unimined' version '1.0.5'
 }
 
 version = project.mod_version
@@ -11,33 +11,113 @@ base {
 }
 
 repositories {
+	maven {
+		name = "wagyourtail releases"
+		url = "https://maven.wagyourtail.xyz/releases"
+	}
+	maven {
+		name = "sponge"
+		url = "https://repo.spongepowered.org/maven"
+	}
 	mavenCentral()
+}
+
+sourceSets {
+	fabric {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+	forge {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+tasks.register("fabricJar", Jar) {
+	from sourceSets.fabric.output, sourceSets.main.output
+
+	archiveClassifier = "fabric"
+}
+
+tasks.register("forgeJar", Jar) {
+	from sourceSets.forge.output, sourceSets.main.output
+
+	archiveClassifier = "forge"
 }
 
 unimined.minecraft {
 	version project.minecraft_version
 
 	mappings {
-		legacyIntermediary(1)
-		legacyYarn(514)
+		searge()
+		mcp("stable", "22-1.8.9")
+	}
+
+	defaultRemapJar = false
+}
+
+unimined.minecraft(sourceSets.fabric) {
+	version project.minecraft_version
+
+	mappings {
+		searge()
+		mcp("stable", "22-1.8.9")
 	}
 
 	legacyFabric {
 		loader project.fabric_version
 	}
+}
+
+unimined.minecraft(sourceSets.forge) {
+	version project.minecraft_version
+
+	mappings {
+		searge()
+		mcp("stable", "22-1.8.9")
+	}
 
 	minecraftForge {
 		loader project.forge_version
+		mixinConfig "notwitchkeybind.mixins.json"
+	}
+}
+
+configurations {
+	mainImplementation
+	implementation {
+		extendsFrom forgeImplementation
+		extendsFrom fabricImplementation
+	}
+}
+
+sourceSets {
+	main {
+		compileClasspath += configurations.mainImplementation
+		runtimeClasspath += configurations.mainImplementation
 	}
 }
 
 dependencies {
+	mainImplementation "org.spongepowered:mixin:0.8.5-SNAPSHOT"
 }
 
-processResources {
+processFabricResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+processForgeResources {
+	inputs.property "version", project.version
+
+	filesMatching("META-INF/mods.toml") {
+		expand "version": project.version
+	}
+
+	filesMatching("mcmod.info") {
 		expand "version": project.version
 	}
 }
@@ -53,12 +133,6 @@ tasks.withType(JavaCompile).configureEach {
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-java {
-	withSourcesJar()
-}
-
 jar {
-	from("LICENSE") {
-		rename { "${it}_${base.archivesName.get()}" }
-	}
+	enabled = false
 }

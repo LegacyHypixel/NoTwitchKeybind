@@ -13,7 +13,7 @@
     "issues": "https://github.com/RacoonDog/NoTwitchKeybind/issues"
   },
   "license": "MIT",
-  "icon": "assets/notwitchkeybind/icon.png",
+  "icon": "icon.png",
   "environment": "client",
   "mixins": [
     "notwitchkeybind.mixins.json"
