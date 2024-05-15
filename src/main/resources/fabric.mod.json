@@ -9,8 +9,8 @@
   ],
   "contact": {
     "discord": "https://discord.gg/4RBmBCFSTc",
-    "sources": "https://github.com/RacoonDog/NoTwitchKeybind",
-    "issues": "https://github.com/RacoonDog/NoTwitchKeybind/issues"
+    "sources": "https://github.com/LegacyHypixel/NoTwitchKeybind",
+    "issues": "https://github.com/LegacyHypixel/NoTwitchKeybind/issues"
   },
   "license": "MIT",
   "icon": "assets/notwitchkeybind/icon.png",
@@ -19,7 +19,7 @@
     "notwitchkeybind.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.19",
+    "fabricloader": ">=0.12",
     "minecraft": "1.8.9"
   }
 }

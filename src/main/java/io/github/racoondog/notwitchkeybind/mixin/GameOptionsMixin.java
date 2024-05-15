@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 @Mixin(GameOptions.class)
@@ -25,8 +23,9 @@ public abstract class GameOptionsMixin {
     @Shadow public KeyBinding streamCommercialKey;
     @Shadow public KeyBinding streamToggleMicKey;
 
-    @Inject(method = "load", at = @At("HEAD"))
+    @Inject(method = "<init>*", at = @At("TAIL"))
     private void removeKeybinds(CallbackInfo ci) {
+        // remove keys from configs
         List<KeyBinding> newKeys = Lists.newArrayList(allKeys);
         newKeys.remove(streamStartStopKey);
         newKeys.remove(streamPauseUnpauseKey);
@@ -34,12 +33,16 @@ public abstract class GameOptionsMixin {
         newKeys.remove(streamToggleMicKey);
         allKeys = newKeys.toArray(new KeyBinding[0]);
 
-        Set<String> newCategories = new HashSet<>();
-        for (KeyBinding keyBinding : newKeys) {
-            newCategories.add(keyBinding.getCategory());
-        }
+        // prevent keys from being usable
+        streamStartStopKey.setCode(-1);
+        streamPauseUnpauseKey.setCode(-1);
+        streamCommercialKey.setCode(-1);
+        streamToggleMicKey.setCode(-1);
 
+        // rebuild categories
         KeyBinding.getCategories().clear();
-        KeyBinding.getCategories().addAll(newCategories);
+        for (KeyBinding keyBinding : allKeys) {
+            KeyBinding.getCategories().add(keyBinding.getCategory());
+        }
     }
 }
